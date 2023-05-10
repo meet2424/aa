@@ -1,93 +1,46 @@
-from _future_ import annotations
-
-class KDNode:
-  data: list[int] = []
-  left: KDNode = None
-  right: KDNode = None
-
-  def _init_(self, data: list[int]):
-    self.data = data
-    self.left = None
-    self.right = None
-
+import numpy as np
+class Node:
+    def __init__(self, point, axis, left=None, right=None):
+        self.point = point
+        self.axis = axis
+        self.left = left
+        self.right = right
 class KDTree:
-  root: KDNode = None
-  dimension: int = 0
+    def __init__(self, points):
+        self.k = points.shape[1]
+        self.root = self.build_kdtree(points)
+    def build_kdtree(self, points, depth=0):
+        n = points.shape[0]
+        if n <= 0:
+            return None
+        axis = depth % self.k
+        sorted_points = points[points[:, axis].argsort()]
+        mid = n // 2
+        return Node(sorted_points[mid], axis,
+            self.build_kdtree(sorted_points[:mid], depth + 1),
+            self.build_kdtree(sorted_points[mid + 1:], depth + 1))
+    def insert(self, point):
+        def _insert(root, point, depth=0):
+            if root is None:
+                return Node(point, depth % self.k)
+            axis = root.axis
+            if point[axis] < root.point[axis]:
+                root.left = _insert(root.left, point, depth + 1)
+            else:
+                root.right = _insert(root.right, point, depth + 1)
+            return root
+        self.root = _insert(self.root, point)
+        
+    def print_kdtree(self, root, level=0):
+        if root is not None:
+            print(" " * level, root.point)
+            self.print_kdtree(root.left, level + 1)
+            self.print_kdtree(root.right, level + 1)
 
-  def _init_(self, dimension = 2):
-    self.root = None
-    self.dimension = dimension
-
-  def insert(self, data: list[int]):
-    self.root = self._insert(data, 0, self.root)
-
-  def _insert(self, data: list[int], index: int, current):
-    if not current:
-      return KDNode(data)
-    else:
-      if data[index] < current.data[index]:
-        current.left = self._insert(data, (index + 1) % self.dimension, current.left)
-      else:
-        current.right = self._insert(data, (index + 1) % self.dimension, current.right)
-    return current
-
-  def inorder(self):
-    self._inorder(self.root)
-
-  def _inorder(self, current):
-    if current:
-      self._inorder(current.left)
-      print(current.data)
-      self._inorder(current.right)
-
-  @staticmethod
-  def create_balanced_tree(data: list[list[int]]) -> KDTree:
-    k = len(data[0])
-    tree = KDTree(k)
-
-    def _sort(_data: list[list[int]], index = 0):
-      if len(_data) == 1:
-        tree.insert(_data[0])
-        return
-      _sorted_data = sorted(_data, key=lambda x: x[index])
-      if len(_data) == 2:
-        tree.insert(_sorted_data[0])
-        tree.insert(_sorted_data[1])
-        return
-      mid = len(_sorted_data) // 2
-      median_element = _sorted_data[mid]
-      print(f"Median element: {median_element}, index: {index}")
-      tree.insert(median_element)
-      right_splitting_index = mid + 1 if len(_sorted_data[mid:]) > 1 else 1
-      print(_sorted_data[:mid])
-      print(_sorted_data[right_splitting_index:])
-      _sort(_sorted_data[:mid], (index + 1) % k)
-      _sort(_sorted_data[right_splitting_index:], (index + 1) % k)
-
-    _sort(data)
-    return tree
-
-  def print_tree(self):
-    self._print_tree(self.root, 0, "R")
-
-  def _print_tree(self, node: KDNode, depth: int, label: str):
-    if not node:
-      Return
-
-
-    print(" " * depth, end="")
-    print(f"{label}->{node.data}")
-    self._print_tree(node.left, depth + 1, "L")
-    self._print_tree(node.right, depth + 1, "R")
-
-
-data = [[6, 2], [7, 1], [2, 9], [3, 6], [4, 8], [8, 4], [5, 3], [1, 5], [9, 5]]
-
-kd_tree = KDTree(2)
-kd_tree = KDTree.create_balanced_tree(data)
-
-# for point in data:
-  # kd_tree.insert(point)
-
-# kd_tree.inorder()
-kd_tree.print_tree()
+points = np.array([[6,2], [7,1], [2,9], [3,6], [4,8], [8,4], [5,3], [1,5], [9,5]])
+tree = KDTree(points)
+print("Initial tree:")
+tree.print_kdtree(tree.root)
+tree.insert(np.array([3,5]))
+print("After insertion of point (3,5):")
+tree.print_kdtree(tree.root)

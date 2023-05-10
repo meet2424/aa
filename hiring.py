@@ -12,8 +12,10 @@ for i in range(len(candidates)):
     candidates.remove(selected_candidate)
 
 # Hire the best candidate so far
+max=-1
 for i in range(len(interviewed_candidates)):
-    if interviewed_candidates[i] == max(interviewed_candidates[:i+1]):
+    if interviewed_candidates[i] > max:
+        max=interviewed_candidates[i]
         hired_candidates.append(interviewed_candidates[i])
 
 # Calculate firing cost

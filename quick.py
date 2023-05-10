@@ -32,12 +32,13 @@ def quicksort(arr) :
         return quicksort(left) + [pivot] + quicksort(right)
 
 #arr = [random.randint(0, 100) for i in range(10000)]
-arr = [1,2,3,4,5,8,7,6,9,10]
+arr = [3,2,10,4,9,8,7,6,5,1] 
+print("Original Array : ",arr)
 arr1 = arr.copy()
 #print(arr)
 st = time.time()
-print("Sorted by randomized way:",randomized_quicksort(arr))
-print("Time taken by randomized quicksort:",(time.time() - st) ,"Comparisons :", c1)
+print("\nSorted by randomized way:",randomized_quicksort(arr))
+print("\nTime taken by randomized quicksort:",(time.time() - st) ,"Comparisons :", c1)
 st = time.time()
-print("Sorted by normal way",quicksort(arr1))
-print("Time taken by normal quicksort:" , (time.time()-st)  ,"Comparisons" ,c2)
+print("\nSorted by normal way",quicksort(arr1))
+print("\nTime taken by normal quicksort:" , (time.time()-st)  ,"Comparisons" ,c2)

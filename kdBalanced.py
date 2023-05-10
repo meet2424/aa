@@ -1,6 +1,5 @@
 import math
 
-
 class Node:
     def __init__(self, nums):
         self.nums = nums
@@ -24,7 +23,7 @@ def traverse_in_order(curr):
 def make_kd_tree(seq, depth=0):
     if len(seq) == 0:
         return None
-   
+    
     k = len(seq[0])
     dim = depth % k
    
@@ -35,7 +34,7 @@ def make_kd_tree(seq, depth=0):
     root = create_node(mid_elem)
    
     left_sub_arr = seq[:mid]
-    right_sub_arr = seq[mid+1:]
+    right_sub_arr = seq[mid+1:] 
    
     root.level = depth
     root.left = make_kd_tree(left_sub_arr, depth+1)

@@ -43,7 +43,8 @@ def build_balanced_kdtree(points, depth=0):
 def inorder(node):
   if node is not None:  
     inorder(node.left)
-    print(f"Depth: {node.depth}, Data: {node.data}, Left: {node.left.data if node.left else None}, Right: {node.right.data if node.right else None}")
+    # print(f"Depth: {node.depth}, Data: {node.data}, Left: {node.left.data if node.left else None}, Right: {node.right.data if node.right else None}")
+    print(f"({', '.join(map(str, node.data))}) ", end="")
     inorder(node.right)
 
 
