@@ -1,15 +1,9 @@
 from collections import defaultdict
 class Graph:
 
-
-
-
     def __init__(self, graph):
         self.graph = graph
         self.ROW = len(graph)
-
-
-
 
     def bfs(self, s, t, parent):
         visited = [False] * self.ROW
@@ -24,9 +18,6 @@ class Graph:
                     visited[ind] = True
                     parent[ind] = u
         return visited[t], parent
-
-
-
 
     def ford_fulkerson(self, source, sink):
         max_flow = 0
@@ -57,15 +48,11 @@ class Graph:
                 v = u
         return max_flow
 
-
 graph = [ [0, 2, 3, 0, 0],
         [0, 0, 0, 0, 3],
         [0, 1, 0, 1, 0],
         [0,0,0,0,3],
-         [0, 0, 0, 0, 0]]
-
-
-
+        [0, 0, 0, 0, 0]]
 
 g = Graph(graph)
 source = 0
