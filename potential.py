@@ -38,7 +38,7 @@ total_cost = 0
 operation_cost = 1
 operation_cos = 1
 prev = 0
-print("Item No.\tTable Size\tPotential\tOperation Cost\tTotal Cost\tAmortizedCost")
+print("Item No.\tTable Size\tPotential\tOperation Cost\tTotal Cost\tAmortized Cost")
 for i in range(1, 18):
     operation_cost = cost(table, "add")
     total_cost += operation_cost
